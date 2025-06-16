@@ -33,4 +33,5 @@ SELECT
   END AS segment
 
 FROM transaction
-GROUP BY customer_id;
+GROUP BY customer_id
+ORDER BY CAST(customer_id AS UNSIGNED);
