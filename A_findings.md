@@ -5,6 +5,7 @@ Dari total 10.000 transaksi, ditemukan sejumlah anomali tersebar pada empat kate
 Temuan ini menunjukkan bahwa variasi pada decoy tertentu cenderung menghasilkan ketidaksesuaian signifikan terhadap nilai pembayaran, yang bisa mengindikasikan potensi noise atau error sistem.
 
 Insight Bisnis:
+
 Deteksi anomali memainkan peran krusial dalam mengidentifikasi pola-pola outlier yang berpotensi merugikan, seperti kesalahan dalam sistem penetapan harga, manipulasi harga, dan perilaku pengguna yang tidak wajar. Penelitian oleh Safa et al. menunjukkan bahwa manipulasi harga saham dapat secara signifikan mengganggu integritas pasar dan kepercayaan investor, serta berdampak langsung terhadap efisiensi dan stabilitas sistem keuangan (Safa et al., 2024).
 
 Proporsi anomali yang lebih tinggi yang terdeteksi pada skenario tertentu—seperti decoy C dan D dalam konteks eksperimen, dapat dijadikan sebagai sinyal awal untuk mengaudit kembali strategi penetapan harga dan prosedur internal yang digunakan. Penelitian ini menegaskan bahwa pendekatan berbasis deep learning, khususnya kombinasi recurrence plots dan variational autoencoder, mampu mengidentifikasi manipulasi harga dengan presisi tinggi dan false alarm yang rendah. Hal ini memberikan landasan kuat untuk meningkatkan proses validasi data, serta meninjau ulang skema diskon, eksperimen harga, atau segmentasi berbasis aturan yang digunakan dalam sistem.
