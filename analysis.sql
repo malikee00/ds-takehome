@@ -1,3 +1,4 @@
+-- CREATING TABLE
 CREATE TABLE transaction (
     order_id VARCHAR(64),
     customer_id VARCHAR(64),
@@ -7,6 +8,8 @@ CREATE TABLE transaction (
     decoy_noise VARCHAR(10)
 );
 
+-- A. MEASURING RFM AND 6 SEGMENTED CUSTOMERS
+-- A.1 Measuring RFM
 SELECT
   customer_id,
   DATEDIFF(
@@ -16,6 +19,7 @@ SELECT
   COUNT(order_id) AS frequency,
   SUM(payment_value) AS monetary,
   
+  -- A.2 Segmenting customers
   CASE
     WHEN DATEDIFF(
       (SELECT MAX(STR_TO_DATE(order_date_raw, '%d/%m/%Y')) FROM transaction),
@@ -36,7 +40,8 @@ FROM transaction
 GROUP BY customer_id
 ORDER BY CAST(customer_id AS UNSIGNED);
 
--- QUERY: Anomaly Detection
+-- B. ANOMALY DETECTION
+-- B.1 Measuring most anomalies devoy_flag
 -- sneak peek for knowing top 10 abs_diff
 SELECT 
   order_id,
@@ -50,9 +55,7 @@ FROM transaction
 ORDER BY abs_diff DESC
 LIMIT 10;
 
--- MEASURING MOST ANOMALIEST DECOY_FLAG
 -- Knowing the treshold
-
 SELECT COUNT(*) AS total_rows FROM abs_diff_values;
 
 -- Q1
@@ -70,7 +73,7 @@ LIMIT 1 OFFSET 7499;  -- 75% dari 10.000
 SELECT 41.17 + 1.5 * (41.17 - 11.07) AS threshold;
 -- 86.320 (Treshold)
 
--- 1. Merging total transaction on CTE
+-- B.2 Merging total transaction 
 WITH 
 total_trans AS (
     SELECT 
@@ -89,7 +92,7 @@ anomaly_transactions AS (
     GROUP BY decoy_flag
 )
 
--- Adding them and measure the anomaly percentage
+-- B.3 Adding them and measure the anomaly percentage
 SELECT 
     t.decoy_flag,
     t.total_trans,
@@ -99,3 +102,32 @@ FROM total_trans t
 LEFT JOIN anomaly_transactions a
     ON t.decoy_flag = a.decoy_flag
 ORDER BY anomaly_pct DESC;
+
+-- C. REPEAT PURCHASE QUERY (monthly)
+WITH monthly_orders AS (
+  SELECT
+    customer_id,
+    DATE_FORMAT(STR_TO_DATE(order_date_raw, '%d/%m/%Y'), '%M-%Y') AS order_month,
+    COUNT(order_id) AS order_count
+  FROM transaction
+  GROUP BY customer_id, order_month
+),
+repeat_customers AS (
+  SELECT
+    order_month,
+    COUNT(*) AS repeat_count
+  FROM monthly_orders
+  WHERE order_count > 1
+  GROUP BY order_month
+)
+SELECT * FROM repeat_customers
+ORDER BY repeat_count DESC;
+
+-- C.1 Explain
+EXPLAIN
+SELECT
+  customer_id,
+  DATE_FORMAT(STR_TO_DATE(order_date_raw, '%d/%m/%Y'), '%Y-%m') AS order_month,
+  COUNT(order_id) AS order_count
+FROM transaction
+GROUP BY customer_id, order_month;
