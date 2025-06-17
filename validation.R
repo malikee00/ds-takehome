@@ -26,3 +26,13 @@ calib <- df %>%
     avg_pred = mean(predicted),
     actual = mean(default)
   )
+
+# Plot calibration curve
+ggplot(calib, aes(x = avg_pred, y = actual)) +
+  geom_line(color = "blue") +
+  geom_abline(linetype = "dashed") +
+  labs(title = "Calibration Curve", x = "Predicted Probability", y = "Actual Default Rate") +
+  theme_minimal()
+
+ggsave("C:/Users/kamil/ds-takehome/calibration_curve.png", dpi = 300)
+
