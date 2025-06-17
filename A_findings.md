@@ -1,5 +1,15 @@
-Deteksi anomali dilakukan dengan menghitung selisih absolut antara `payment_value` dan `decoy_noise`, menggunakan threshold statistik berbasis IQR (86.32). Transaksi dengan selisih di atas nilai ini dianggap anomali. Dari 10.000 transaksi, proporsi anomali tertinggi terdapat pada decoy C (2.96%) dan D (2.93%).
+Analisis dimulai dengan segmentasi pelanggan menggunakan metrik RFM (Recency, Frequency, Monetary). Dari hasil klasifikasi, pelanggan terbagi ke dalam enam segmen utama: 
 
-Temuan ini mengindikasikan bahwa variasi pada skenario decoy tertentu memicu ketidaksesuaian terhadap nilai pembayaran, yang dapat mencerminkan noise sistem atau potensi error pricing. Insight ini relevan untuk audit ulang strategi penetapan harga atau prosedur validasi diskon.
+(1) Recent Buyer, yang baru melakukan pembelian dalam 30 hari terakhir; 
 
-Penelitian oleh [Safa et al. (2024)](https://ieeexplore.ieee.org/document/10650234) menunjukkan bahwa pendekatan deep learning seperti variational autoencoder dan recurrence plots efektif mendeteksi manipulasi harga dengan presisi tinggi. Hal ini mendukung pentingnya validasi data berbasis statistik dan machine learning guna menjaga efisiensi sistem dan kepercayaan pengguna.
+(2) Loyal High Spender, pelanggan dengan ≥10 transaksi dan total pembelian ≥1000; 
+
+(3) Frequent Buyer, dengan ≥10 transaksi namun nilai belanja <1000; 
+
+(4) Big Spender, nilai belanja ≥1000 tetapi jumlah transaksi <10; 
+
+(5) At Risk, pelanggan yang tidak aktif >300 hari; dan (6) Others.
+
+Deteksi anomali dilakukan dengan menghitung selisih absolut antara `payment_value` dan `decoy_noise`, menggunakan threshold IQR sebesar 86.32. Anomali terbanyak terdeteksi pada decoy C (2.96%) dan D (2.93%).
+
+Terakhir, analisis pembelian ulang bulanan menunjukkan fluktuasi loyalitas pelanggan yang dapat dimanfaatkan untuk strategi retensi dan evaluasi eksperimen harga.
